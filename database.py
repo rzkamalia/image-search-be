@@ -5,7 +5,12 @@ import weaviate
 class Database():
     def __init__(self, collection_name: str) -> None:
         # connect to weaviate database
-        self.client = weaviate.connect_to_local()
+        self.client = weaviate.connect_to_local(
+            host = "0.0.0.0",
+            port = 8080,
+            grpc_port = 50051,
+        )
+
         self.collection_name = collection_name
 
         # connect to postgres database
