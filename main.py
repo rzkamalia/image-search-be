@@ -41,7 +41,7 @@ async def search_image(file: UploadFile = File(...)):
 
 @app.get("/image/{filename}")
 async def get_image(filename: str):
-    image_path = os.path.join("imgs/", filename)
+    image_path = os.path.join("assets/imgs/", filename)
     if os.path.exists(image_path):
         return responses.FileResponse(image_path)
     raise HTTPException(status_code = 404, detail = "Image not found")
