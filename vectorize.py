@@ -49,5 +49,5 @@ class VectorizeExecutor():
         self.convert_image_to_base64()
         self.db.insert_base64_to_collection(self.base64_imgs_path)
 
-vectorize = VectorizeExecutor(soure_imgs_path = "imgs", base64_imgs_path = "base64_imgs", collection_name = COLLECTION_NAME)
+vectorize = VectorizeExecutor(soure_imgs_path = "assets/imgs", base64_imgs_path = "assets/base64_imgs", collection_name = COLLECTION_NAME)
 vectorize.main()

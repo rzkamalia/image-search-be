@@ -2,8 +2,8 @@ FROM python:3.12.2-slim
 
 WORKDIR /app
 
-COPY base64_imgs/ /app/base64_imgs
-COPY imgs/ /app/imgs
+COPY assets/base64_imgs/ /app/base64_imgs
+COPY assets/imgs/ /app/imgs
 COPY database.py /app
 COPY main.py /app
 COPY vectorize.py /app
