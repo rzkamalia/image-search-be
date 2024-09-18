@@ -5,20 +5,21 @@ import weaviate
 class Database():
     def __init__(self, collection_name: str) -> None:
         # connect to weaviate database
-        self.client = weaviate.connect_to_local(
-            host = "0.0.0.0",
+        self.client = weaviate.Client(
+            host = "34.101.43.116",
             port = 8080,
             grpc_port = 50051,
-        )
+        ) 
 
         self.collection_name = collection_name
 
         # connect to postgres database
         self.conn = psycopg2.connect(
-            dbname = "postgres",
+            dbname = "postgres_suju",
             user = "postgres",
             password = "suju",
-            host = "localhost"
+            host = "34.101.43.116",
+            port = 5432
         )
 
         self.log_table_name = "search_image_logs"
