@@ -5,11 +5,7 @@ import weaviate
 class Database():
     def __init__(self, collection_name: str) -> None:
         # connect to weaviate database
-        self.client = weaviate.Client(
-            host = "34.101.43.116",
-            port = 8080,
-            grpc_port = 50051,
-        ) 
+        self.client = weaviate.Client("http://34.101.43.116:8080")
 
         self.collection_name = collection_name
 
