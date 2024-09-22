@@ -25,15 +25,22 @@ class Database():
             create weaviate collection.
         '''
 
-        self.client.collections.create(
-            self.collection_name,
-            vectorizer_config = weaviate.classes.config.Configure.Vectorizer.img2vec_neural(image_fields = ["image"]),
-            vector_index_config = weaviate.classes.config.Configure.VectorIndex.hnsw(),
-            properties = [
-                weaviate.classes.config.Property(name = "image", data_type = weaviate.classes.config.DataType.BLOB),
-                weaviate.classes.config.Property(name = "filename", data_type = weaviate.classes.config.DataType.TEXT),
-            ]
-        )
+        schema = {
+            "class": "Article",
+            "properties": [
+                {
+                    "name": "image",
+                    "dataType": ["blob"],
+                },
+                {
+                    "name": "filename",
+                    "dataType": ["text"],
+                },
+            ],
+            "vectorizer": "img2vec-neural",
+            "vectorIndexType": "hnsw"
+        }
+        self.client.schema.create_class(schema)
         print("The schema has been created.")
 
     def insert_base64_to_collection(self, base64_imgs_path: str) -> None:
@@ -41,8 +48,8 @@ class Database():
             insert base64 to weaviate collection.
         '''
 
-        collection = self.client.collections.get(self.collection_name)
-        with collection.batch.dynamic() as batch:
+        collection = self.client.schema.get(self.collection_name)
+        with collection.batch as batch:
             for filename in os.listdir(base64_imgs_path):
                 if filename.endswith('.b64'):
                     with open(os.path.join(base64_imgs_path, filename), 'r') as file:
@@ -54,10 +61,9 @@ class Database():
                         "filename": image_file,
                     }
 
-                    batch.add_object(data_properties)
+                    batch.add_data_object(data_properties)
 
         print("The objects have been uploaded to Weaviate.")
-
     
     def create_log_table(self) -> None:
         '''
@@ -92,7 +98,7 @@ class Database():
             search image given a base64 query.
         '''
 
-        collection = self.client.collections.get(self.collection_name)
+        collection = self.client.schema.get(self.collection_name)
         return collection.query.near_image(
             near_image = base64_encoding,
             return_properties = ["filename"],
