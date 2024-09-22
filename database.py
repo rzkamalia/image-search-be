@@ -25,9 +25,12 @@ class Database():
             create weaviate collection.
         '''
 
-        if self.collection_name not in self.client.collections.list():
+        try:
+            self.client.schema.get(self.collection_name)
+            print(f"Collection '{self.collection_name}' already exists.")
+        except weaviate.exceptions.UnexpectedStatusCodeException:
             schema = {
-                "class": "ImageSeacrh",
+                "class": self.collection_name,
                 "properties": [
                     {
                         "name": "image",
@@ -42,9 +45,7 @@ class Database():
                 "vectorIndexType": "hnsw"
             }
             self.client.schema.create_class(schema)
-            print("The schema has been created.")
-        else:
-            print("The schema already created.")
+            print(f"The schema for collection '{self.collection_name}' has been created.")
 
     def insert_base64_to_collection(self, base64_imgs_path: str) -> None:
         '''
