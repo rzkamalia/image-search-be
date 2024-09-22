@@ -25,23 +25,26 @@ class Database():
             create weaviate collection.
         '''
 
-        schema = {
-            "class": "Article",
-            "properties": [
-                {
-                    "name": "image",
-                    "dataType": ["blob"],
-                },
-                {
-                    "name": "filename",
-                    "dataType": ["text"],
-                },
-            ],
-            "vectorizer": "img2vec-neural",
-            "vectorIndexType": "hnsw"
-        }
-        self.client.schema.create_class(schema)
-        print("The schema has been created.")
+        if self.collection_name not in self.client.collections.list():
+            schema = {
+                "class": "ImageSeacrh",
+                "properties": [
+                    {
+                        "name": "image",
+                        "dataType": ["blob"],
+                    },
+                    {
+                        "name": "filename",
+                        "dataType": ["text"],
+                    },
+                ],
+                "vectorizer": "img2vec-neural",
+                "vectorIndexType": "hnsw"
+            }
+            self.client.schema.create_class(schema)
+            print("The schema has been created.")
+        else:
+            print("The schema already created.")
 
     def insert_base64_to_collection(self, base64_imgs_path: str) -> None:
         '''
