@@ -52,8 +52,7 @@ class Database():
             insert base64 to weaviate collection.
         '''
 
-        collection = self.client.schema.get(self.collection_name)
-        with collection.batch as batch:
+        with self.client.batch(batch_size = 100) as batch:
             for filename in os.listdir(base64_imgs_path):
                 if filename.endswith('.b64'):
                     with open(os.path.join(base64_imgs_path, filename), 'r') as file:
@@ -65,7 +64,7 @@ class Database():
                         "filename": image_file,
                     }
 
-                    batch.add_data_object(data_properties)
+                    batch.add_data_object(data_properties, self.collection_name)
 
         print("The objects have been uploaded to Weaviate.")
     
