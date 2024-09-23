@@ -11,6 +11,7 @@ COLLECTION_NAME = "ImageSearchApp"
 
 app = FastAPI()
 db = Database(collection_name = COLLECTION_NAME)
+db.create_log_table()
 
 # CORS middleware
 app.add_middleware(
@@ -30,7 +31,7 @@ async def search_image(file: UploadFile = File(...)):
         
         response = db.query_image(base64_encoding)
         
-        results = [r.properties["filename"] for r in response.objects]
+        results = [r["filename"] for r in response]
         
         # insert log
         db.insert_log(datetime.datetime.now(), file.filename, results)

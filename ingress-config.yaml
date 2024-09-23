@@ -3,22 +3,22 @@ kind: Ingress
 metadata:
   name: my-ingress
   annotations:
-    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.class: gce
 spec:
   rules:
   - http:
       paths:
-      - path: /*                    
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: fe
-            port:
-              number: 3000
-      - path: /v2
-        pathType: ImplementationSpecific
+      - path: /search
+        pathType: Prefix
         backend:
           service:
             name: be
-            port:
+            port: 
               number: 5000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: fe
+            port: 
+              number: 3000

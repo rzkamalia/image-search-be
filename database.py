@@ -77,7 +77,7 @@ class Database():
     
     def create_log_table(self) -> None:
         '''
-            cretae log table in postgres.
+            create log table in postgres.
         '''
 
         with self.conn.cursor() as cur:
@@ -98,7 +98,7 @@ class Database():
 
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO search_image_logs (timestamp, image_name, results) VALUES (%s, %s, %s)",
+                f"INSERT INTO {self.log_table_name} (timestamp, image_name, results) VALUES (%s, %s, %s)",
                 (datetime, filename, results)
             )
             self.conn.commit()
@@ -108,10 +108,8 @@ class Database():
             search image given a base64 query.
         '''
 
-        collection = self.client.schema.get(self.collection_name)
-        return collection.query.near_image(
-            near_image = base64_encoding,
-            return_properties = ["filename"],
-            limit = 4
-        )
-        
+        result = self.client.query.get(self.collection_name, "filename").with_near_image(
+            {"image": base64_encoding}, encode = False   # False because the image is already base64-encoded
+            ).with_limit(4).do()
+        print(result)
+        return result["data"]["Get"][self.collection_name]
