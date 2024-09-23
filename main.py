@@ -16,11 +16,15 @@ db.create_log_table()
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = ["http://0.0.0.0:3000"],
+    allow_origins = ["*"],
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"],
 )
+
+@app.get("/")
+async def root():
+    return {"message": f"Backend {COLLECTION_NAME} is running."}
 
 @app.post("/search")
 async def search_image(file: UploadFile = File(...)):
@@ -32,7 +36,7 @@ async def search_image(file: UploadFile = File(...)):
         response = db.query_image(base64_encoding)
         
         results = [r["filename"] for r in response]
-        
+
         # insert log
         db.insert_log(datetime.datetime.now(), file.filename, results)
         
