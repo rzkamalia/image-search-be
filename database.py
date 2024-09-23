@@ -42,7 +42,14 @@ class Database():
                     },
                 ],
                 "vectorizer": "img2vec-neural",
-                "vectorIndexType": "hnsw"
+                "vectorIndexType": "hnsw",
+                "moduleConfig": {
+                    "img2vec-neural": {
+                        "imageFields": [
+                            "image"
+                        ]
+                    }
+                }
             }
             self.client.schema.create_class(schema)
             print(f"The schema for collection '{self.collection_name}' has been created.")
