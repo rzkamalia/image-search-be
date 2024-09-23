@@ -5,7 +5,7 @@ import weaviate
 class Database():
     def __init__(self, collection_name: str) -> None:
         # connect to weaviate database
-        self.client = weaviate.Client("http://34.101.187.84:8080")
+        self.client = weaviate.Client("http://34.50.83.82:8080")
 
         self.collection_name = collection_name
 
@@ -14,7 +14,7 @@ class Database():
             dbname = "postgres_suju",
             user = "postgres",
             password = "suju",
-            host = "34.101.187.84",
+            host = "34.50.83.82",
             port = 5432
         )
 
