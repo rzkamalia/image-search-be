@@ -15,6 +15,13 @@ spec:
             name: be
             port: 
               number: 5000
+      - path: /image
+        pathType: Prefix
+        backend:
+          service:
+            name: be
+            port: 
+              number: 5000
       - path: /
         pathType: Prefix
         backend:
