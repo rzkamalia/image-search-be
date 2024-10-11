@@ -30,13 +30,13 @@ gcloud config list
 # create a cluster
 gcloud container clusters create-auto CLUSTER_NAME --location=LOCATION --project=PROJECT_ID --service-account=SERVICE_ACCOUNT_EMAIL
 ```
-6. CreateCreate a GitHub workflow. Wait until everything is done. To verify if the program has been deployed:
+6. Create a GitHub workflow. Wait until everything is done. To verify if the program has been deployed:
 ```
 kubectl get pods
 ```
 If the status is RUNNING, the deployment is complete.
 
-7. Repeat the above steps for both the backend and frontend (code frontend can be access: [frontend](https://github.com/rzkamalia/image-search-fe)).
+7. Repeat the above steps (number 6) for frontend (frontend code can be access: [frontend](https://github.com/rzkamalia/image-search-fe)).
 8. After that, set up ingress so that your app can be accessed from outside the network:
 ```
 # set up ingress
